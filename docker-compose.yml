@@ -1,0 +1,29 @@
+version: "3.6"
+services:
+
+  mariadb:
+    image: mariadb
+    container_name: docker-mariadb
+    environment :
+      - MYSQL_ROOT_PASSWORD=root
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8082:80
+    environment:
+      - PMA_HOST=mariadb
+    depends_on:
+      - mariadb
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 8025:8025
+
+  php:
+    build: .
+    ports:
+      - 8083:80
+    volumes:
+      - ./:/var/www/html
